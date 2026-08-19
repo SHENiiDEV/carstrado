@@ -1,0 +1,10 @@
+.git
+.idea
+vendor
+node_modules
+npm-debug.log
+storage/*.key
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml

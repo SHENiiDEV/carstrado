@@ -1,0 +1,51 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: autobrokers_app
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8000:8000"
+      - "5173:5173"
+    environment:
+      SERVICE_NAME: app
+      VITE_HMR_HOST: localhost
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - autobrokers-network
+
+  db:
+    image: mysql:8.0
+    container_name: autobrokers_db
+    command: --sort_buffer_size=16M --max_allowed_packet=64M
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: autobrokers
+      MYSQL_USER: autobrokers
+      MYSQL_PASSWORD: secretpassword
+      MYSQL_ROOT_PASSWORD: rootsecret
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootsecret"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - autobrokers-network
+
+networks:
+  autobrokers-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
