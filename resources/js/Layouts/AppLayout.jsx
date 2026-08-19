@@ -38,6 +38,38 @@ export default function AppLayout({ children }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const [cookieConsentOpen, setCookieConsentOpen] = useState(false);
+
+  // Check cookie consent
+  useEffect(() => {
+    const hasConsent = localStorage.getItem('carstrado_cookie_consent');
+    if (!hasConsent) {
+      setCookieConsentOpen(true);
+    }
+  }, []);
+
+  const acceptAllCookies = () => {
+    localStorage.setItem('carstrado_cookie_consent', JSON.stringify({
+      essential: true,
+      functional: true,
+      analytics: true,
+      marketing: true,
+      timestamp: new Date().toISOString(),
+    }));
+    setCookieConsentOpen(false);
+  };
+
+  const acceptEssentialOnly = () => {
+    localStorage.setItem('carstrado_cookie_consent', JSON.stringify({
+      essential: true,
+      functional: true,
+      analytics: false,
+      marketing: false,
+      timestamp: new Date().toISOString(),
+    }));
+    setCookieConsentOpen(false);
+  };
+
   return (
     <div className="relative min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans antialiased selection:bg-orange-500 selection:text-white">
       {/* Top Announcement & Trust Bar */}
@@ -323,6 +355,48 @@ export default function AppLayout({ children }) {
           </div>
         </div>
       </footer>
+
+      {/* Modern Fixed Cookie Consent Toast Banner */}
+      {cookieConsentOpen && (
+        <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-xl z-50 animate-in fade-in slide-in-from-bottom-5 duration-300">
+          <div className="bg-slate-900/95 backdrop-blur-xl text-white rounded-3xl p-6 shadow-2xl border border-white/10 shadow-black/50 space-y-4">
+            <div className="flex items-start gap-3">
+              <div className="h-9 w-9 rounded-xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-orange-400 shrink-0 mt-0.5">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-sm font-black text-white">We Value Your Privacy & Security</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  CarStrado uses essential cookies to secure escrow transactions, manage sessions, and remember your currency and vehicle search filters.
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-slate-800">
+              <Link
+                href={route('pages.cookies')}
+                className="text-xs font-bold text-slate-400 hover:text-white underline"
+              >
+                Customize Preferences
+              </Link>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={acceptEssentialOnly}
+                  className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-colors"
+                >
+                  Essential Only
+                </button>
+                <button
+                  onClick={acceptAllCookies}
+                  className="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-black shadow-lg shadow-orange-600/30 transition-all active:scale-95"
+                >
+                  Accept All
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
