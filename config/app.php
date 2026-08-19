@@ -128,7 +128,6 @@ return [
         'number' => env('COMPANY_NUMBER', '16290553'),
         'address' => env('COMPANY_ADDRESS', '2 Navarre Street, London, England, E2 7JH'),
         'email' => env('COMPANY_EMAIL', 'support@carstrado.com'),
-        'phone' => env('COMPANY_PHONE', '+44 20 7946 0912'),
         'desk' => env('COMPANY_DESK', 'London HQ'),
         'domain' => 'CarStrado.com',
     ],

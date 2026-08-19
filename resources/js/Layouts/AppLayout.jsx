@@ -82,9 +82,9 @@ export default function AppLayout({ children }) {
           </div>
 
           <div className="flex items-center gap-4 text-[11px] text-slate-300 ml-auto">
-            <span className="hidden sm:inline flex items-center gap-1">
-              <Phone className="h-3 w-3 text-orange-500" /> {company.desk}: {company.phone}
-            </span>
+            <Link href={route('pages.contact')} className="hidden sm:inline-flex items-center gap-1 hover:text-orange-400 transition-colors">
+              <Mail className="h-3 w-3 text-orange-500" /> {company.email}
+            </Link>
             <select
               defaultValue={localStorage.getItem('carstrado_lang') || 'en'}
               onChange={(e) => {
@@ -147,6 +147,18 @@ export default function AppLayout({ children }) {
               >
                 <Info className="h-4 w-4" />
                 About Us
+              </Link>
+
+              <Link
+                href={route('pages.contact')}
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors flex items-center gap-2 ${
+                  route().current('pages.contact*') 
+                    ? 'bg-orange-50 text-orange-600 border border-orange-200 font-bold' 
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                }`}
+              >
+                <Mail className="h-4 w-4" />
+                Contact
               </Link>
             </nav>
           </div>
@@ -337,10 +349,10 @@ export default function AppLayout({ children }) {
               </a>
             </p>
             <p className="text-xs text-slate-600 flex items-center gap-1.5">
-              <Phone className="h-3.5 w-3.5 text-orange-600 flex-shrink-0" />
-              <a href={`tel:${company.phone}`} className="hover:text-orange-600 transition-colors font-bold">
-                {company.phone}
-              </a>
+              <Link href={route('pages.contact')} className="hover:text-orange-600 transition-colors font-bold text-orange-600 flex items-center gap-1">
+                <MessageSquare className="h-3.5 w-3.5" />
+                <span>Online Contact Desk &rarr;</span>
+              </Link>
             </p>
           </div>
         </div>
@@ -349,6 +361,7 @@ export default function AppLayout({ children }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
           <div>BASILDON LIMITED (Company No. 16290553) &bull; CarStrado.com &copy; 2026. All rights reserved. Registered Office: 2 Navarre Street, London, England, E2 7JH.</div>
           <div className="flex gap-4">
+            <Link href={route('pages.contact')} className="hover:text-slate-600">Contact Us</Link>
             <Link href={route('pages.privacy')} className="hover:text-slate-600">Privacy Policy</Link>
             <Link href={route('pages.terms')} className="hover:text-slate-600">Terms of Service</Link>
             <Link href={route('pages.cookies')} className="hover:text-slate-600">Cookie Preferences</Link>

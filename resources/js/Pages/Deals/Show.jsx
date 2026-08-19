@@ -23,7 +23,6 @@ export default function DealShow({ deal, pipelineSteps, currentStepIndex }) {
     number: '16290553',
     address: '2 Navarre Street, London, England, E2 7JH',
     email: 'support@carstrado.com',
-    phone: '+44 20 7946 0912',
   };
 
   const handleStatusChange = (newStatus) => {

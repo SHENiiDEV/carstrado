@@ -92,23 +92,23 @@ export default function FaqPage({ faqCategories }) {
         })}
 
         {/* Still Need Help Box */}
-        <div className="bg-slate-900 rounded-2xl p-8 text-white text-center shadow-xl">
+        <div className="bg-slate-900 rounded-3xl p-8 sm:p-10 text-white text-center shadow-xl border border-slate-800">
           <h3 className="text-2xl font-black mb-2">Still Have Questions?</h3>
           <p className="text-slate-300 text-xs max-w-lg mx-auto mb-6 font-medium">
-            Our Swiss & EU automotive brokerage team is available Monday to Friday, 08:00 - 18:00 CET.
+            Our European automotive sourcing team and compliance desk are ready to assist you via email.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href="mailto:support@mobile.broker"
-              className="px-6 py-3 rounded-xl bg-orange-600 hover:bg-orange-500 font-bold text-xs transition-colors flex items-center gap-2"
+            <Link
+              href={route('pages.contact')}
+              className="px-6 py-3 rounded-2xl bg-orange-600 hover:bg-orange-500 font-extrabold text-xs transition-colors flex items-center gap-2 shadow-lg shadow-orange-600/30"
             >
-              <Mail className="h-4 w-4" /> Email Support Desk
-            </a>
+              <Mail className="h-4 w-4" /> Open Support Inquiry
+            </Link>
             <a
-              href="tel:+41449990011"
-              className="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-xs transition-colors flex items-center gap-2 text-slate-200"
+              href="mailto:support@carstrado.com"
+              className="px-6 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 font-bold text-xs transition-colors flex items-center gap-2 text-slate-200"
             >
-              <Phone className="h-4 w-4" /> Call Zurich Desk: +41 44 999 00 11
+              <Mail className="h-4 w-4 text-orange-500" /> support@carstrado.com
             </a>
           </div>
         </div>

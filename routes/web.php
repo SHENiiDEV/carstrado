@@ -41,12 +41,16 @@ Route::post('/dealer/settings', [DealerDashboardController::class, 'updateSettin
 Route::get('/dealer/services', [DealerDashboardController::class, 'services'])->name('dealer.services');
 Route::get('/dealer/fleet-analytics', [DealerDashboardController::class, 'fleetAnalytics'])->name('dealer.fleetAnalytics');
 
-// Dynamic Pages (FAQ, Privacy, Terms, Cookies, About)
+use App\Http\Controllers\ContactController;
+
+// Dynamic Pages (FAQ, Privacy, Terms, Cookies, About, Contact)
 Route::get('/faq', [PageController::class, 'faq'])->name('pages.faq');
 Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('pages.privacy');
 Route::get('/terms-and-conditions', [PageController::class, 'termsAndConditions'])->name('pages.terms');
 Route::get('/cookie-policy', [PageController::class, 'cookiePolicy'])->name('pages.cookies');
 Route::get('/about', [PageController::class, 'about'])->name('pages.about');
+Route::get('/contact', [ContactController::class, 'index'])->name('pages.contact');
+Route::post('/contact', [ContactController::class, 'submit'])->name('pages.contact.submit');
 
 use App\Http\Controllers\Auth\PasswordResetController;
 

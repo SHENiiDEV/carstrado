@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 
+use App\Mail\WelcomeUserMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+
 class RegisteredUserController extends Controller
 {
     public function create()
@@ -100,6 +104,13 @@ class RegisteredUserController extends Controller
                 'is_verified' => true,
                 'brands_json' => ['Porsche', 'BMW', 'Audi', 'Mercedes-Benz'],
             ]);
+        }
+
+        // Send Welcome Email via PrivateMail SMTP
+        try {
+            Mail::to($user->email)->send(new WelcomeUserMail($user));
+        } catch (\Exception $e) {
+            Log::error('Failed to send welcome email to ' . $user->email . ': ' . $e->getMessage());
         }
 
         Auth::login($user);
