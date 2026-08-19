@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
 import { route } from '@/lib/route';
-import { Car, FileText, ShieldCheck, Check, Building2, User, Phone, Mail, MapPin, Search, Shield, Store, Compass, ChevronDown, LogOut, Info } from 'lucide-react';
+import { Car, FileText, ShieldCheck, Check, Building2, User, Phone, Mail, MapPin, Search, Shield, Store, Compass, ChevronDown, LogOut, Info, MessageSquare } from 'lucide-react';
 
 export default function AppLayout({ children }) {
   const { auth, flash, topBrands, companyInfo } = usePage().props;
