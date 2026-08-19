@@ -65,6 +65,6 @@ class ContactController extends Controller
             Log::error('Contact form email failed to send: ' . $e->getMessage());
         }
 
-        return redirect()->route('pages.contact')->with('success', 'Your message has been securely submitted! Our desk will reply to your email within 2–4 hours.');
+        return redirect()->route('pages.contact')->with('success', 'Your message has been securely submitted! Our desk will reply to your email within 24–48 hours.');
     }
 }

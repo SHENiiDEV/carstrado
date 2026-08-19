@@ -94,7 +94,7 @@ export default function ContactPage({ turnstileSiteKey }) {
             <span>&bull;</span>
             <span>Dedicated Email: <strong>support@carstrado.com</strong></span>
             <span>&bull;</span>
-            <span>Response Time: <strong>2–4 Hours</strong></span>
+            <span>Response Time: <strong>24–48 Hours</strong></span>
           </div>
         </div>
       </div>
@@ -162,7 +162,7 @@ export default function ContactPage({ turnstileSiteKey }) {
               <ul className="space-y-2 text-xs text-slate-300 font-medium">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-orange-500 shrink-0" />
-                  <span>Sourcing quotes generated within 2–4 hours</span>
+                  <span>Sourcing quotes generated within 24–48 hours</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-orange-500 shrink-0" />
