@@ -33,6 +33,8 @@ export function route(name, params = null) {
         'pages.terms': '/terms-and-conditions',
         'pages.cookies': '/cookie-policy',
         'pages.about': '/about',
+        'pages.contact': '/contact',
+        'pages.contact.submit': '/contact',
     };
 
     if (!name) {
@@ -46,7 +48,7 @@ export function route(name, params = null) {
                 if (pattern === 'dealer.*') return currentPath.startsWith('/dealer');
                 if (pattern === 'login') return currentPath === '/login';
                 if (pattern === 'register') return currentPath === '/register';
-                if (pattern === 'pages.*') return ['/faq', '/privacy-policy', '/terms-and-conditions', '/cookie-policy', '/about'].includes(currentPath);
+                if (pattern === 'pages.*') return ['/faq', '/privacy-policy', '/terms-and-conditions', '/cookie-policy', '/about', '/contact'].includes(currentPath);
                 return false;
             }
         };
