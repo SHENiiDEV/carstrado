@@ -84,6 +84,40 @@ class VehicleController extends Controller
         $bodyStyles = Vehicle::whereNotNull('body_style')->select('body_style')->distinct()->pluck('body_style')->filter()->values();
         $countries = Vehicle::whereNotNull('location_country')->select('location_country')->distinct()->pluck('location_country')->filter()->values();
 
+        // Calculate dynamic brand counts from database
+        $brandCounts = Vehicle::where('status', 'available')
+            ->whereNotNull('make')
+            ->selectRaw('make, count(*) as count')
+            ->groupBy('make')
+            ->orderByDesc('count')
+            ->get()
+            ->map(function ($item) {
+                $codeMap = [
+                    'Porsche' => 'POR',
+                    'BMW' => 'BMW',
+                    'Mercedes-Benz' => 'MB',
+                    'Mercedes' => 'MB',
+                    'Audi' => 'AUDI',
+                    'Tesla' => 'TSLA',
+                    'Volvo' => 'VOLVO',
+                    'Ferrari' => 'FER',
+                    'Lamborghini' => 'LAMBO',
+                    'Aston Martin' => 'AM',
+                    'Land Rover' => 'LR',
+                    'Range Rover' => 'RR',
+                    'Bentley' => 'BENT',
+                    'Rolls-Royce' => 'RR',
+                    'Maserati' => 'MAS',
+                    'McLaren' => 'MCL',
+                ];
+
+                return [
+                    'make' => $item->make,
+                    'count' => $item->count,
+                    'code' => $codeMap[$item->make] ?? strtoupper(substr($item->make, 0, 3)),
+                ];
+            });
+
         // Build modelsMap grouped by make
         $modelsMap = [];
         foreach ($makes as $m) {
@@ -94,6 +128,7 @@ class VehicleController extends Controller
             'vehicles' => $vehicles,
             'filters' => $request->only(['search', 'make', 'model', 'fuel_type', 'body_style', 'country', 'max_price', 'max_mileage', 'min_year', 'fleet_only', 'sort']) ?: (object)[],
             'makes' => $makes,
+            'brandCounts' => $brandCounts,
             'modelsMap' => $modelsMap,
             'bodyStyles' => $bodyStyles,
             'countries' => $countries,

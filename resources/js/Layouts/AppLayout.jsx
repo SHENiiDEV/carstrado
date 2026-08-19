@@ -18,14 +18,7 @@ export default function AppLayout({ children }) {
     desk: 'London HQ',
   };
 
-  const brands = topBrands && topBrands.length > 0 ? topBrands : [
-    { make: 'Porsche', count: 3 },
-    { make: 'BMW', count: 3 },
-    { make: 'Mercedes-Benz', count: 2 },
-    { make: 'Audi', count: 2 },
-    { make: 'Tesla', count: 1 },
-    { make: 'Volvo', count: 1 },
-  ];
+  const brands = Array.isArray(topBrands) ? topBrands : [];
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -290,19 +283,25 @@ export default function AppLayout({ children }) {
           {/* Column 2: Dynamic Top Brands from Database */}
           <div>
             <h4 className="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider">Top Brands</h4>
-            <ul className="space-y-2 text-xs text-slate-600">
-              {brands.map((b) => (
-                <li key={b.make}>
-                  <Link
-                    href={route('vehicles.index', { make: b.make })}
-                    className="hover:text-orange-600 transition-colors flex items-center justify-between font-medium"
-                  >
-                    <span>{b.make}</span>
-                    <span className="text-[10px] font-mono text-slate-400">({b.count})</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {brands.length > 0 ? (
+              <ul className="space-y-2 text-xs text-slate-600">
+                {brands.map((b) => (
+                  <li key={b.make}>
+                    <Link
+                      href={route('vehicles.index', { make: b.make })}
+                      className="hover:text-orange-600 transition-colors flex items-center justify-between font-medium"
+                    >
+                      <span>{b.make}</span>
+                      <span className="text-[10px] font-mono text-slate-400">({b.count})</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-xs text-slate-400">
+                Direct access to OEM verified inventory from official UK, German, and Swiss dealerships.
+              </p>
+            )}
           </div>
 
           {/* Column 3: Legal & Brokerage Pages */}

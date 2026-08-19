@@ -11,6 +11,7 @@ export default function VehiclesIndex({
   vehicles = [],
   filters = {},
   makes = [],
+  brandCounts = [],
   modelsMap = {},
   bodyStyles = [],
   countries = [],
@@ -22,6 +23,7 @@ export default function VehiclesIndex({
   const safeFilters = filters || {};
   const safeMakes = Array.isArray(makes) ? makes.filter(Boolean) : [];
   const safeBodyStyles = Array.isArray(bodyStyles) ? bodyStyles.filter(Boolean) : [];
+  const safeBrandCounts = Array.isArray(brandCounts) ? brandCounts : [];
 
   const [search, setSearch] = useState(safeFilters.search || '');
   const [selectedMake, setSelectedMake] = useState(safeFilters.make || 'all');
@@ -53,14 +55,7 @@ export default function VehiclesIndex({
     }
   };
 
-  const brandLogos = [
-    { make: 'Porsche', count: 3, code: 'POR' },
-    { make: 'BMW', count: 3, code: 'BMW' },
-    { make: 'Mercedes-Benz', count: 2, code: 'MB' },
-    { make: 'Audi', count: 2, code: 'AUDI' },
-    { make: 'Tesla', count: 1, code: 'TSLA' },
-    { make: 'Volvo', count: 1, code: 'VOLVO' },
-  ];
+  const brandLogos = safeBrandCounts;
 
   // Available models for currently selected make
   const availableModels = selectedMake !== 'all' && modelsMap[selectedMake]
