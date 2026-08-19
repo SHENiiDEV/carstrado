@@ -22,8 +22,8 @@ export default function AboutPage() {
     },
     {
       num: '02',
-      title: 'Swiss VQF Escrow Deposit',
-      desc: 'Buyer deposits agreed funds into MiaVia regulated Swiss VQF Escrow account (Wise Bank CH). Funds remain 100% protected until final delivery.'
+      title: 'Institutional Escrow Deposit',
+      desc: 'Buyer deposits agreed funds into CarStrado regulated Escrow account. Funds remain 100% protected until final delivery and inspection approval.'
     },
     {
       num: '03',

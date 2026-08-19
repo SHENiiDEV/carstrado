@@ -156,7 +156,7 @@ export default function VehiclesIndex({
 
   const faqs = [
     {
-      q: 'How does MiaVia guarantee vehicle condition?',
+      q: 'How does CarStrado guarantee vehicle condition?',
       a: 'Every car undergoes an independent 150-point TÜV / DEKRA technical inspection prior to dispatch, covering battery state of health, chassis integrity, and mechanical history.'
     },
     {
@@ -879,7 +879,7 @@ export default function VehiclesIndex({
         <div className="text-center mb-8">
           <HelpCircle className="h-8 w-8 text-orange-600 mx-auto mb-2" />
           <h2 className="text-2xl font-black text-slate-900">Frequently Asked Questions</h2>
-          <p className="text-xs text-slate-500">Everything you need to know about purchasing or leasing a vehicle via MiaVia.</p>
+          <p className="text-xs text-slate-500">Everything you need to know about purchasing or leasing a vehicle via CarStrado.</p>
         </div>
 
         <div className="space-y-3">

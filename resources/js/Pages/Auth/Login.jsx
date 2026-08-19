@@ -96,7 +96,7 @@ export default function Login() {
               disabled={processing}
               className="w-full py-3.5 rounded-xl font-extrabold text-white bg-orange-600 hover:bg-orange-500 shadow-md text-sm transition-all flex items-center justify-center gap-2"
             >
-              <span>Sign In to MiaVia</span>
+              <span>Sign In to CarStrado</span>
               <ArrowRight className="h-4 w-4" />
             </button>
           </form>

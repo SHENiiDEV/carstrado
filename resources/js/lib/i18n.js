@@ -133,12 +133,12 @@ const LanguageContext = createContext();
 
 export function LanguageProvider({ children }) {
   const [lang, setLang] = useState(() => {
-    return localStorage.getItem('miavia_lang') || 'en';
+    return localStorage.getItem('carstrado_lang') || 'en';
   });
 
   const changeLanguage = (newLang) => {
     setLang(newLang);
-    localStorage.setItem('miavia_lang', newLang);
+    localStorage.setItem('carstrado_lang', newLang);
   };
 
   const t = (path) => {

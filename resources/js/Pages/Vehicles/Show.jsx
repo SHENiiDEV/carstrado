@@ -444,7 +444,7 @@ export default function VehicleShow({ vehicle, similarVehicles = [], pricingBrea
                 </div>
 
                 <div className="flex justify-between text-slate-600 font-medium">
-                  <span>MiaVia Fee ({commissionRate}%):</span>
+                  <span>CarStrado Fee ({commissionRate}%):</span>
                   <span className="font-mono font-bold text-orange-600">
                     +{format(commissionAmount)}
                   </span>

@@ -16,53 +16,53 @@ class AutoBrokersSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Create Core Users for MiaVia & AutoBrokers
+        // 1. Create Core Users for CarStrado
         $users = [
             [
-                'name' => 'Marc Weber (Retail B2C)',
-                'email' => 'buyer@miavia.co.uk',
+                'name' => 'Alexander Smith (Retail B2C)',
+                'email' => 'buyer@carstrado.com',
                 'password' => Hash::make('password'),
                 'role' => 'retail_buyer',
-                'phone' => '+41 79 123 45 67',
-                'country' => 'CH',
+                'phone' => '+44 20 7946 0111',
+                'country' => 'GB',
             ],
             [
-                'name' => 'Marc Weber',
+                'name' => 'Alexander Smith',
                 'email' => 'buyer@autobrokers.io',
                 'password' => Hash::make('password'),
                 'role' => 'retail_buyer',
-                'phone' => '+41 79 123 45 67',
-                'country' => 'CH',
+                'phone' => '+44 20 7946 0111',
+                'country' => 'GB',
             ],
             [
                 'name' => 'Sophie Laurent (B2B Fleet)',
-                'email' => 'fleet@miavia.co.uk',
+                'email' => 'fleet@carstrado.com',
                 'password' => Hash::make('password'),
                 'role' => 'b2b_fleet_manager',
-                'company_name' => 'Swiss Alpine Mobility AG',
-                'vat_number' => 'CHE-109.812.345',
-                'phone' => '+41 44 987 65 43',
-                'country' => 'CH',
+                'company_name' => 'Continental Fleet Logistics Ltd',
+                'vat_number' => 'GB987654321',
+                'phone' => '+44 20 7946 0222',
+                'country' => 'GB',
             ],
             [
                 'name' => 'Sophie Laurent',
                 'email' => 'b2b@fleetcorp.ch',
                 'password' => Hash::make('password'),
                 'role' => 'b2b_fleet_manager',
-                'company_name' => 'Swiss Alpine Mobility AG',
-                'vat_number' => 'CHE-109.812.345',
-                'phone' => '+41 44 987 65 43',
-                'country' => 'CH',
+                'company_name' => 'Continental Fleet Logistics Ltd',
+                'vat_number' => 'GB987654321',
+                'phone' => '+44 20 7946 0222',
+                'country' => 'GB',
             ],
             [
-                'name' => 'Porsche Center Zurich (Dealer)',
-                'email' => 'dealer@miavia.co.uk',
+                'name' => 'Porsche Center London (Dealer)',
+                'email' => 'dealer@carstrado.com',
                 'password' => Hash::make('password'),
                 'role' => 'dealer_partner',
-                'company_name' => 'Porsche Center Zurich',
-                'vat_number' => 'CHE-405.112.990',
-                'phone' => '+41 44 333 22 11',
-                'country' => 'CH',
+                'company_name' => 'Porsche Center London',
+                'vat_number' => 'GB405112990',
+                'phone' => '+44 20 7946 0333',
+                'country' => 'GB',
             ],
             [
                 'name' => 'Hans Meyer',
@@ -75,20 +75,20 @@ class AutoBrokersSeeder extends Seeder
                 'country' => 'CH',
             ],
             [
-                'name' => 'MiaVia Compliance Admin',
-                'email' => 'admin@miavia.co.uk',
+                'name' => 'CarStrado Compliance Admin',
+                'email' => 'admin@carstrado.com',
                 'password' => Hash::make('password'),
                 'role' => 'broker_admin',
-                'phone' => '+41 22 555 44 33',
-                'country' => 'CH',
+                'phone' => '+44 20 7946 0000',
+                'country' => 'GB',
             ],
             [
                 'name' => 'AutoBrokers Compliance Desk',
                 'email' => 'admin@autobrokers.io',
                 'password' => Hash::make('password'),
                 'role' => 'broker_admin',
-                'phone' => '+41 22 555 44 33',
-                'country' => 'CH',
+                'phone' => '+44 20 7946 0000',
+                'country' => 'GB',
             ],
         ];
 
@@ -96,9 +96,9 @@ class AutoBrokersSeeder extends Seeder
             User::updateOrCreate(['email' => $userData['email']], $userData);
         }
 
-        $buyer = User::where('email', 'buyer@miavia.co.uk')->first();
-        $fleetManager = User::where('email', 'fleet@miavia.co.uk')->first();
-        $dealerUser = User::where('email', 'dealer@miavia.co.uk')->first();
+        $buyer = User::where('email', 'buyer@carstrado.com')->first();
+        $fleetManager = User::where('email', 'fleet@carstrado.com')->first();
+        $dealerUser = User::where('email', 'dealer@carstrado.com')->first();
 
         // 2. Create Dealers
         $dealerZurich = Dealer::firstOrCreate(['name' => 'Porsche Center Zurich'], [

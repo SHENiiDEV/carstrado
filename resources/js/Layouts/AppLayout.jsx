@@ -269,15 +269,17 @@ export default function AppLayout({ children }) {
       {/* Main Content View */}
       <main className="relative z-10 flex-1">{children}</main>
 
-      {/* MiaVia Light Dynamic Footer */}
+      {/* CarStrado Light Dynamic Footer */}
       <footer className="relative z-10 border-t border-slate-200 bg-white py-12 text-slate-600 text-sm mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <Compass className="h-6 w-6 text-orange-600" />
+              <div className="h-8 w-8 rounded-xl bg-orange-600 text-white flex items-center justify-center font-black text-sm shadow-md">
+                <Car className="h-4 w-4" />
+              </div>
               <span className="font-extrabold text-xl text-slate-900">
-                mia<span className="text-orange-600">via</span>
-                <span className="text-xs text-slate-400 font-mono font-normal ml-1">.co.uk</span>
+                Car<span className="text-orange-600 font-black">Strado</span>
+                <span className="text-xs text-slate-400 font-mono font-normal ml-1">.com</span>
               </span>
             </div>
             <p className="text-xs text-slate-500 leading-relaxed">

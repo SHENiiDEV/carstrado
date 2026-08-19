@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title inertia>{{ config('app.name', 'MiaVia') }} - Premium Automotive Sourcing</title>
+        <title inertia>{{ config('app.name', 'CarStrado') }} - European Automotive Sourcing & Escrow</title>
         <!-- Favicon -->
         <link rel="icon" type="image/jpeg" href="/images/miavia_favicon.jpg">
         <!-- Fonts -->

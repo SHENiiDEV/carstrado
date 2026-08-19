@@ -73,7 +73,7 @@ export default function DealShow({ deal, pipelineSteps, currentStepIndex }) {
 
   return (
     <AppLayout>
-      <Head title={`Deal Tracker ${deal.reference_code} - MiaVia`} />
+      <Head title={`Deal Tracker ${deal.reference_code} - CarStrado`} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 print:p-0 print:m-0 print:max-w-none">
         {/* Back Navigation & Ref Header (Hidden in Print) */}
@@ -327,7 +327,7 @@ export default function DealShow({ deal, pipelineSteps, currentStepIndex }) {
                   className="w-full py-3.5 rounded-xl font-extrabold text-white bg-orange-600 hover:bg-orange-500 text-xs shadow-lg shadow-orange-500/30 transition-all flex items-center justify-center gap-2"
                 >
                   <Landmark className="h-4 w-4" />
-                  <span>Deposit Funds to MiaVia VQF Escrow</span>
+                  <span>Deposit Funds to CarStrado Escrow</span>
                 </button>
               )}
 
@@ -438,7 +438,7 @@ export default function DealShow({ deal, pipelineSteps, currentStepIndex }) {
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-2">
                   <Landmark className="h-6 w-6 text-emerald-600" />
-                  <h3 className="font-black text-slate-900 text-lg">Deposit into MiaVia VQF Escrow</h3>
+                  <h3 className="font-black text-slate-900 text-lg">Deposit into CarStrado Escrow Vault</h3>
                 </div>
                 <button onClick={() => setShowEscrowModal(false)} className="text-slate-400 hover:text-slate-700">
                   <X className="h-5 w-5" />
@@ -469,8 +469,8 @@ export default function DealShow({ deal, pipelineSteps, currentStepIndex }) {
                   <div className="flex items-center gap-3">
                     <Landmark className="h-5 w-5 text-emerald-600" />
                     <div>
-                      <div className="text-xs font-bold text-slate-900">Wise Bank Wire Escrow (CH / EU)</div>
-                      <div className="text-[11px] text-slate-500">IBAN: CH93 0000 0000 0000 0000 0 &bull; Swiss VQF Escrow</div>
+                      <div className="text-xs font-bold text-slate-900">Wise Bank Wire Escrow (UK / CH / EU)</div>
+                      <div className="text-[11px] text-slate-500">IBAN: GB93 WISE 0000 0000 0000 00 &bull; Regulated Escrow Vault</div>
                     </div>
                   </div>
                 </div>
@@ -484,7 +484,7 @@ export default function DealShow({ deal, pipelineSteps, currentStepIndex }) {
                   <div className="flex items-center gap-3">
                     <CreditCard className="h-5 w-5 text-indigo-600" />
                     <div>
-                      <div className="text-xs font-bold text-slate-900">Stripe Corporate Credit Card</div>
+                      <div className="text-xs font-bold text-slate-900">Stripe Corporate Card</div>
                       <div className="text-[11px] text-slate-500">Instant Escrow Hold &bull; Visa / Mastercard / Amex</div>
                     </div>
                   </div>
@@ -515,7 +515,7 @@ export default function DealShow({ deal, pipelineSteps, currentStepIndex }) {
                   </div>
                   <div>
                     <h3 className="font-extrabold text-slate-900 text-lg">Upload Compliance Document</h3>
-                    <p className="text-[11px] text-slate-500 font-medium">Swiss VQF AML & EU Regulated Document Verification</p>
+                    <p className="text-[11px] text-slate-500 font-medium">UK / EU Regulated Document Verification & AML Audit</p>
                   </div>
                 </div>
                 <button onClick={() => setShowUploadModal(false)} className="text-slate-400 hover:text-slate-700 p-2 rounded-xl hover:bg-slate-100 transition-colors">
@@ -565,7 +565,7 @@ export default function DealShow({ deal, pipelineSteps, currentStepIndex }) {
                   <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Or Choose a Sample Document Preset:</span>
                   <div className="grid grid-cols-2 gap-2">
                     {[
-                      'Passport_Scan_CH.pdf',
+                      'Passport_Scan_UK.pdf',
                       'Commercial_Register_Extract.pdf',
                       'EU_VAT_Certificate.pdf',
                       'DEKRA_TUV_150Pt_Report.pdf'
@@ -611,7 +611,7 @@ export default function DealShow({ deal, pipelineSteps, currentStepIndex }) {
               <div className="flex items-center justify-between border-b border-slate-200 pb-4">
                 <div>
                   <span className="text-xs font-mono font-bold text-orange-600 block">OFFICIAL BROKERAGE CONTRACT & INVOICE</span>
-                  <h2 className="text-2xl font-black text-slate-900">MiaVia Automotive AG Sourcing Quote</h2>
+                  <h2 className="text-2xl font-black text-slate-900">CarStrado.com Sourcing Quote & Escrow Contract</h2>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
@@ -633,8 +633,8 @@ export default function DealShow({ deal, pipelineSteps, currentStepIndex }) {
                   <div>
                     <h3 className="font-extrabold text-slate-900 text-base">{company.name}</h3>
                     <p className="text-[11px] text-slate-500">{company.address}</p>
-                    <p className="text-[11px] text-slate-500">{company.email} &bull; {company.phone}</p>
-                    <p className="text-[10px] text-orange-600 font-mono font-bold mt-1">Swiss VQF License: CH-8005-ZH-MAKLER</p>
+                    <p className="text-[11px] text-slate-500">{company.email}</p>
+                    <p className="text-[10px] text-orange-600 font-mono font-bold mt-1">UK Registered Entity: Co. No. {company.number}</p>
                   </div>
                   <div className="text-right">
                     <span className="font-mono text-sm font-black text-slate-900 block">{deal.reference_code}</span>
@@ -677,7 +677,7 @@ export default function DealShow({ deal, pipelineSteps, currentStepIndex }) {
                       <td className="p-3 text-right font-mono font-bold">{format(deal.agreed_price)}</td>
                     </tr>
                     <tr>
-                      <td className="p-3">MiaVia Guarantee & Escrow Fee ({deal.commission_rate}%)</td>
+                      <td className="p-3">CarStrado Guarantee & Escrow Fee ({deal.commission_rate}%)</td>
                       <td className="p-3">1</td>
                       <td className="p-3 text-right font-mono font-bold text-orange-600">+{format(deal.commission_amount)}</td>
                     </tr>

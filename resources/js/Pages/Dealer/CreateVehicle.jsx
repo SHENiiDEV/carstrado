@@ -500,7 +500,7 @@ export default function CreateVehicle() {
               className="w-full py-4 rounded-2xl font-extrabold text-white bg-orange-600 hover:bg-orange-500 shadow-xl shadow-orange-500/30 text-sm transition-all flex items-center justify-center gap-2"
             >
               <Car className="h-5 w-5" />
-              <span>Publish Vehicle to MiaVia Catalog</span>
+              <span>Publish Vehicle to CarStrado Catalog</span>
             </button>
           </form>
         </div>
