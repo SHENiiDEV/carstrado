@@ -7,8 +7,22 @@ import {
   CheckCircle2, DollarSign, ArrowRight, Clock, HelpCircle, Mail, Phone, MapPin 
 } from 'lucide-react';
 
+import { usePage } from '@inertiajs/react';
+
 export default function TermsAndConditionsPage() {
+  const { companyInfo } = usePage().props;
   const [activeSection, setActiveSection] = useState('overview');
+
+  const company = companyInfo || {
+    name: 'BASILDON LIMITED',
+    number: '16290553',
+    address: '2 Navarre Street, London, England, E2 7JH',
+    email: 'support@carstrado.com',
+    legal_email: 'legal@carstrado.com',
+  };
+
+  const supportEmail = company.email || 'support@carstrado.com';
+  const legalEmail = company.legal_email || 'legal@carstrado.com';
 
   const navigationSections = [
     { id: 'overview', label: '1. Platform & Corporate Structure' },
@@ -90,10 +104,10 @@ export default function TermsAndConditionsPage() {
                     Our compliance desk is available for buyer verifications, AML audit trail requests, and contract queries.
                   </p>
                   <a
-                    href="mailto:legal@carstrado.com"
+                    href={`mailto:${legalEmail}`}
                     className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:underline pt-1"
                   >
-                    <Mail className="h-3.5 w-3.5" /> legal@carstrado.com
+                    <Mail className="h-3.5 w-3.5" /> {legalEmail}
                   </a>
                 </div>
               </div>
@@ -117,10 +131,11 @@ export default function TermsAndConditionsPage() {
                 <strong>CarStrado</strong> (accessible via <a href="https://carstrado.com" className="text-orange-600 font-bold hover:underline">CarStrado.com</a>) is an online digital automotive sourcing and escrow brokerage platform wholly owned and operated by:
               </p>
               <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 font-mono text-xs space-y-1.5 text-slate-800">
-                <div><strong>Company Name:</strong> BASILDON LIMITED</div>
-                <div><strong>Registered in England and Wales:</strong> Company Number 16290553</div>
-                <div><strong>Registered Office:</strong> 2 Navarre Street, London, England, E2 7JH</div>
-                <div><strong>Contact Support Desk:</strong> support@carstrado.com | +44 20 7946 0912</div>
+                <div><strong>Company Name:</strong> {company.name}</div>
+                <div><strong>Registered in England and Wales:</strong> Company Number {company.number}</div>
+                <div><strong>Registered Office:</strong> {company.address}</div>
+                <div><strong>Contact Support Desk:</strong> {supportEmail}</div>
+                <div><strong>Legal & Compliance Desk:</strong> {legalEmail}</div>
                 <div><strong>Operations Hub:</strong> London (HQ), Zurich & Munich Dealership Desks</div>
               </div>
               <p>

@@ -7,8 +7,22 @@ import {
   FileText, CheckCircle2, AlertCircle, Mail, Phone, MapPin 
 } from 'lucide-react';
 
+import { usePage } from '@inertiajs/react';
+
 export default function PrivacyPolicyPage() {
+  const { companyInfo } = usePage().props;
   const [activeSection, setActiveSection] = useState('controller');
+
+  const company = companyInfo || {
+    name: 'BASILDON LIMITED',
+    number: '16290553',
+    address: '2 Navarre Street, London, England, E2 7JH',
+    email: 'support@carstrado.com',
+    legal_email: 'legal@carstrado.com',
+  };
+
+  const supportEmail = company.email || 'support@carstrado.com';
+  const legalEmail = company.legal_email || 'legal@carstrado.com';
 
   const navigationSections = [
     { id: 'controller', label: '1. Data Controller Overview' },
@@ -90,10 +104,10 @@ export default function PrivacyPolicyPage() {
                     Contact our dedicated DPO desk for Subject Access Requests (SAR) or data erasure petitions.
                   </p>
                   <a
-                    href="mailto:privacy@carstrado.com"
+                    href={`mailto:${legalEmail}`}
                     className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:underline pt-1"
                   >
-                    <Mail className="h-3.5 w-3.5" /> privacy@carstrado.com
+                    <Mail className="h-3.5 w-3.5" /> {legalEmail}
                   </a>
                 </div>
               </div>
@@ -117,11 +131,12 @@ export default function PrivacyPolicyPage() {
                 This Privacy Notice applies to all personal data collected through the <strong>CarStrado.com</strong> website, client procurement portals, dealer workspaces, and related escrow communication channels.
               </p>
               <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 font-mono text-xs space-y-1.5 text-slate-800">
-                <div><strong>Data Controller:</strong> BASILDON LIMITED</div>
-                <div><strong>Company Registration:</strong> 16290553 (England & Wales)</div>
-                <div><strong>Registered Office:</strong> 2 Navarre Street, London, England, E2 7JH</div>
+                <div><strong>Data Controller:</strong> {company.name}</div>
+                <div><strong>Company Registration:</strong> {company.number} (England & Wales)</div>
+                <div><strong>Registered Office:</strong> {company.address}</div>
                 <div><strong>Supervisory Authority:</strong> Information Commissioner's Office (ICO), UK</div>
-                <div><strong>Privacy Team Email:</strong> privacy@carstrado.com</div>
+                <div><strong>Privacy & Legal Email:</strong> {legalEmail}</div>
+                <div><strong>Customer Support Email:</strong> {supportEmail}</div>
               </div>
             </section>
 

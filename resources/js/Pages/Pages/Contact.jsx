@@ -8,9 +8,20 @@ import {
 } from 'lucide-react';
 
 export default function ContactPage({ turnstileSiteKey }) {
-  const { flash } = usePage().props;
+  const { flash, companyInfo } = usePage().props;
   const turnstileContainerRef = useRef(null);
   const [turnstileLoaded, setTurnstileLoaded] = useState(false);
+
+  const company = companyInfo || {
+    name: 'BASILDON LIMITED',
+    number: '16290553',
+    address: '2 Navarre Street, London, England, E2 7JH',
+    email: 'support@carstrado.com',
+    legal_email: 'legal@carstrado.com',
+  };
+
+  const supportEmail = company.email || 'support@carstrado.com';
+  const legalEmail = company.legal_email || 'legal@carstrado.com';
 
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
@@ -90,9 +101,9 @@ export default function ContactPage({ turnstileSiteKey }) {
             Direct European automotive sourcing, escrow settlement inquiries, dealer partnerships, and compliance assistance.
           </p>
           <div className="mt-4 flex flex-wrap items-center gap-4 text-xs font-mono text-slate-400">
-            <span>Corporate Entity: <strong>BASILDON LIMITED</strong> (No. 16290553)</span>
+            <span>Corporate Entity: <strong>{company.name}</strong> (No. {company.number})</span>
             <span>&bull;</span>
-            <span>Dedicated Email: <strong>support@carstrado.com</strong></span>
+            <span>Dedicated Email: <strong>{supportEmail}</strong></span>
             <span>&bull;</span>
             <span>Response Time: <strong>24–48 Hours</strong></span>
           </div>
@@ -117,8 +128,8 @@ export default function ContactPage({ turnstileSiteKey }) {
                   </div>
                   <div>
                     <strong className="text-slate-900 text-xs uppercase tracking-wider block">Official Support Email</strong>
-                    <a href="mailto:support@carstrado.com" className="text-sm font-bold text-orange-600 hover:underline font-mono">
-                      support@carstrado.com
+                    <a href={`mailto:${supportEmail}`} className="text-sm font-bold text-orange-600 hover:underline font-mono">
+                      {supportEmail}
                     </a>
                     <span className="text-[11px] text-slate-400 block mt-0.5">General sourcing, quotes, and customer care</span>
                   </div>
@@ -130,8 +141,8 @@ export default function ContactPage({ turnstileSiteKey }) {
                   </div>
                   <div>
                     <strong className="text-slate-900 text-xs uppercase tracking-wider block">Compliance & Legal Desk</strong>
-                    <a href="mailto:legal@carstrado.com" className="text-sm font-bold text-purple-600 hover:underline font-mono">
-                      legal@carstrado.com
+                    <a href={`mailto:${legalEmail}`} className="text-sm font-bold text-purple-600 hover:underline font-mono">
+                      {legalEmail}
                     </a>
                     <span className="text-[11px] text-slate-400 block mt-0.5">AML/KYC verifications, SAR & Privacy requests</span>
                   </div>
@@ -144,10 +155,10 @@ export default function ContactPage({ turnstileSiteKey }) {
                   <div>
                     <strong className="text-slate-900 text-xs uppercase tracking-wider block">Registered Corporate Office</strong>
                     <p className="text-xs font-semibold text-slate-700 mt-0.5">
-                      BASILDON LIMITED<br />
-                      2 Navarre Street, London, England, E2 7JH
+                      {company.name}<br />
+                      {company.address}
                     </p>
-                    <span className="text-[10px] text-slate-400 font-mono block mt-1">Company No. 16290553</span>
+                    <span className="text-[10px] text-slate-400 font-mono block mt-1">Company No. {company.number}</span>
                   </div>
                 </div>
               </div>
