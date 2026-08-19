@@ -180,12 +180,7 @@ export default function ContactPage({ turnstileSiteKey }) {
           <div className="lg:col-span-7">
             <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-2xl space-y-6">
               <div>
-                <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-black text-slate-900">Send an Inquiry</h2>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-mono font-bold border border-slate-200">
-                    <Lock className="h-3 w-3 text-orange-600" /> Cloudflare Turnstile Protected
-                  </span>
-                </div>
+                <h2 className="text-2xl font-black text-slate-900">Send an Inquiry</h2>
                 <p className="text-xs text-slate-500 font-medium mt-1">
                   Fill out the form below. Messages are dispatched directly to our operations desk via encrypted channels.
                 </p>
