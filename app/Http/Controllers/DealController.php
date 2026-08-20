@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
+use App\Mail\EscrowDepositReceiptMail;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+
 class DealController extends Controller
 {
     public function index()
@@ -29,19 +34,23 @@ class DealController extends Controller
         } elseif ($user->role === 'dealer_partner' && $user->dealer) {
             $query->where('dealer_id', $user->dealer->id);
         }
-        // Admin sees all deals
 
         $deals = $query->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('Deals/Index', [
             'deals' => $deals,
             'userRole' => $user->role,
-            'summaryStats' => [
-                'totalDeals' => $deals->count(),
-                'totalVolumeEur' => $deals->sum('total_amount'),
-                'activePipeline' => $deals->whereNotIn('status', ['completed', 'cancelled'])->count(),
-                'escrowHoldingEur' => $deals->where('escrow_status', 'holding')->sum('total_amount'),
-            ],
+        ]);
+    }
+
+    public function create(Request $request)
+    {
+        $vehicleId = $request->query('vehicle_id');
+        $vehicle = Vehicle::with('dealer')->findOrFail($vehicleId);
+
+        return Inertia::render('Deals/Create', [
+            'vehicle' => $vehicle,
+            'user' => Auth::user(),
         ]);
     }
 
@@ -50,33 +59,29 @@ class DealController extends Controller
         $user = Auth::user();
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Please sign in to place a procurement request.');
+            return redirect()->route('login')->with('error', 'Please register or login to request an escrow deal.');
         }
 
         $request->validate([
             'vehicle_id' => 'required|exists:vehicles,id',
             'type' => 'required|in:retail,b2b_fleet',
-            'quantity' => 'nullable|integer|min:1',
-            'buyer_notes' => 'nullable|string',
+            'quantity' => 'required|integer|min:1',
+            'buyer_notes' => 'nullable|string|max:1000',
         ]);
 
-        $vehicle = Vehicle::findOrFail($request->vehicle_id);
+        $vehicle = Vehicle::with('dealer')->findOrFail($request->vehicle_id);
 
-        $quantity = $request->input('quantity', 1);
+        $quantity = $request->quantity;
         $agreedPrice = $vehicle->price_eur * $quantity;
         
         $commissionRate = ($request->type === 'b2b_fleet' || $user->role === 'b2b_fleet_manager') ? 3.50 : 4.50;
         $commissionAmount = round(($agreedPrice * $commissionRate) / 100, 2);
         
-        // Estimated VAT (0 for B2B Reverse Charge, 8.1% for CH retail)
-        $vat = ($request->type === 'b2b_fleet' || $user->role === 'b2b_fleet_manager') 
-            ? 0.00 
-            : round($agreedPrice * 0.081, 2);
-            
-        $deliveryFee = $request->type === 'b2b_fleet' ? 1800.00 : 450.00;
+        $vat = $vehicle->location_country === 'CH' ? round($agreedPrice * 0.081, 2) : 0.00;
+        $deliveryFee = 450.00;
         $totalAmount = $agreedPrice + $commissionAmount + $vat + $deliveryFee;
 
-        $referenceCode = 'AB-' . date('Y') . '-' . strtoupper(Str::random(5));
+        $referenceCode = 'CB-' . strtoupper(Str::random(6));
 
         $deal = Deal::create([
             'reference_code' => $referenceCode,
@@ -97,7 +102,6 @@ class DealController extends Controller
             'broker_notes' => 'Brokerage request received. Initial compliance checklist generated.',
         ]);
 
-        // Generate initial compliance requirements
         if ($request->type === 'b2b_fleet' || $user->role === 'b2b_fleet_manager') {
             ComplianceRecord::create([
                 'deal_id' => $deal->id,
@@ -140,25 +144,19 @@ class DealController extends Controller
         $user = Auth::user();
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Please sign in to view deal details.');
+            return redirect()->route('login')->with('error', 'Please sign in to view deal tracker.');
         }
 
         $deal = Deal::with(['buyer', 'dealer', 'vehicle', 'complianceRecords', 'shipment', 'transactions'])->findOrFail($id);
 
-        $pipelineSteps = [
-            ['id' => 'quote_requested', 'label' => 'Quote Requested', 'desc' => 'Request submitted & under review'],
-            ['id' => 'quote_approved', 'label' => 'Broker Approved', 'desc' => 'Price & terms verified by broker desk'],
-            ['id' => 'compliance_pending', 'label' => 'Compliance Review', 'desc' => 'VQF AML & VAT docs verification'],
-            ['id' => 'escrow_funded', 'label' => 'Escrow Funded', 'desc' => 'Payment secured in escrow float'],
-            ['id' => 'logistics_in_transit', 'label' => 'In Logistics', 'desc' => 'White-glove transport in transit'],
-            ['id' => 'delivered', 'label' => 'Delivered', 'desc' => 'Vehicle handed over & inspected'],
-            ['id' => 'completed', 'label' => 'Deal Completed', 'desc' => 'Escrow released & closed'],
-        ];
+        if ($user->role !== 'broker_admin' && $deal->buyer_id !== $user->id && (!$user->dealer || $deal->dealer_id !== $user->dealer->id)) {
+            abort(403, 'Unauthorized access to this escrow deal.');
+        }
 
         return Inertia::render('Deals/Show', [
             'deal' => $deal,
-            'pipelineSteps' => $pipelineSteps,
-            'currentStepIndex' => array_search($deal->status, array_column($pipelineSteps, 'id')),
+            'userRole' => $user->role,
+            'companyInfo' => config('app.company'),
         ]);
     }
 
@@ -170,7 +168,7 @@ class DealController extends Controller
             return redirect()->route('login')->with('error', 'Please sign in to update deal status.');
         }
 
-        $deal = Deal::findOrFail($id);
+        $deal = Deal::with(['buyer', 'dealer', 'vehicle'])->findOrFail($id);
         $newStatus = $request->input('status');
 
         $validStatuses = [
@@ -182,10 +180,6 @@ class DealController extends Controller
             $oldStatus = $deal->status;
             $deal->status = $newStatus;
 
-            // Trigger E-mail & SMS alert dispatch
-            \App\Services\NotificationService::sendDealStatusAlert($deal, $oldStatus, $newStatus);
-
-            // Automatically manage escrow status based on pipeline
             if ($newStatus === 'escrow_funded') {
                 $deal->escrow_status = 'holding';
                 if ($deal->transactions()->count() === 0) {
@@ -199,6 +193,15 @@ class DealController extends Controller
                         'reference_id' => 'TXN-' . rand(100000, 999999),
                     ]);
                 }
+
+                try {
+                    if ($deal->buyer && !empty($deal->buyer->email)) {
+                        Mail::to($deal->buyer->email)->send(new EscrowDepositReceiptMail($deal));
+                    }
+                } catch (\Exception $e) {
+                    Log::error('Failed to send EscrowDepositReceiptMail: ' . $e->getMessage());
+                }
+
             } elseif ($newStatus === 'completed') {
                 $deal->escrow_status = 'released';
                 Transaction::create([
@@ -216,7 +219,7 @@ class DealController extends Controller
                     'type' => 'broker_commission',
                     'amount' => $deal->commission_amount,
                     'currency' => 'EUR',
-                    'provider' => 'AutoBrokers Ledger',
+                    'provider' => 'CarStrado Ledger',
                     'status' => 'completed',
                     'reference_id' => 'FEE-' . rand(100000, 999999),
                 ]);
@@ -225,8 +228,8 @@ class DealController extends Controller
             if ($newStatus === 'logistics_in_transit' && !$deal->shipment) {
                 LogisticsShipment::create([
                     'deal_id' => $deal->id,
-                    'carrier_name' => 'AutoBrokers Alpine Express Logistics',
-                    'tracking_code' => 'AB-TRK-' . rand(100000, 999999),
+                    'carrier_name' => 'CarStrado Express Logistics',
+                    'tracking_code' => 'CS-TRK-' . rand(100000, 999999),
                     'origin_address' => $deal->dealer->city . ', ' . $deal->dealer->country,
                     'origin_country' => $deal->dealer->country,
                     'destination_address' => $deal->buyer->company_name ?? $deal->buyer->name,
@@ -240,5 +243,30 @@ class DealController extends Controller
         }
 
         return redirect()->back()->with('success', "Deal status updated to " . str_replace('_', ' ', $newStatus));
+    }
+
+    public function downloadInvoice($id)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Please sign in to download your invoice.');
+        }
+
+        $deal = Deal::with(['buyer', 'dealer', 'vehicle'])->findOrFail($id);
+
+        if ($user->role !== 'broker_admin' && $deal->buyer_id !== $user->id && (!$user->dealer || $deal->dealer_id !== $user->dealer->id)) {
+            abort(403, 'Unauthorized access to this invoice.');
+        }
+
+        $invoiceRef = 'INV-' . strtoupper(substr(md5($deal->reference_code . '-' . $deal->id), 0, 8));
+
+        $pdf = Pdf::loadView('pdf.deal_invoice', [
+            'deal' => $deal,
+            'invoiceRef' => $invoiceRef,
+            'company' => config('app.company'),
+        ]);
+
+        return $pdf->download("Invoice_{$invoiceRef}_{$deal->reference_code}.pdf");
     }
 }

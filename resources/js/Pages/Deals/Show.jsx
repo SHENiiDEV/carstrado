@@ -94,14 +94,23 @@ export default function DealShow({ deal, pipelineSteps, currentStepIndex }) {
             </div>
           </div>
 
-          {/* PDF Quote Button & Role Controls */}
+          {/* PDF Quote Button, Download Invoice & Role Controls */}
           <div className="flex items-center gap-3">
+            <a
+              href={route('deals.invoice', deal.id)}
+              className="px-4 py-2 rounded-xl bg-orange-600 text-white font-extrabold text-xs hover:bg-orange-500 transition-all flex items-center gap-2 shadow-md shadow-orange-600/30 active:scale-[0.98]"
+              title="Download official UK/EU Tax Invoice (PDF)"
+            >
+              <Download className="h-4 w-4" />
+              <span>Download B2B Invoice (PDF)</span>
+            </a>
+
             <button
               onClick={() => setShowPdfModal(true)}
-              className="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-orange-600 transition-colors flex items-center gap-2 shadow-sm"
+              className="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors flex items-center gap-2 shadow-sm"
             >
               <Printer className="h-4 w-4" />
-              <span>Official PDF Quote / Invoice</span>
+              <span>Print Quote</span>
             </button>
 
             <select

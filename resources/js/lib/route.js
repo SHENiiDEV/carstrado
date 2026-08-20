@@ -6,6 +6,7 @@ export function route(name, params = null) {
         'deals.store': '/deals',
         'deals.show': (id) => `/deals/${id}`,
         'deals.updateStatus': (id) => `/deals/${id}/status`,
+        'deals.invoice': (id) => `/deals/${id}/invoice`,
         'compliance.verify': (id) => `/compliance/${id}/verify`,
         'compliance.upload': (id) => `/compliance/${id}/upload`,
         'admin.dashboard': '/admin',

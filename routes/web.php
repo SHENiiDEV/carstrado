@@ -20,6 +20,7 @@ Route::get('/deals', [DealController::class, 'index'])->name('deals.index');
 Route::post('/deals', [DealController::class, 'store'])->name('deals.store');
 Route::get('/deals/{id}', [DealController::class, 'show'])->name('deals.show');
 Route::post('/deals/{id}/status', [DealController::class, 'updateStatus'])->name('deals.updateStatus');
+Route::get('/deals/{id}/invoice', [DealController::class, 'downloadInvoice'])->name('deals.invoice');
 
 // Automated Compliance & Docs
 Route::post('/compliance/{id}/verify', [ComplianceController::class, 'verify'])->name('compliance.verify');

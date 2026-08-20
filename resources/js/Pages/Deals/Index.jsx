@@ -154,12 +154,23 @@ export default function DealsIndex({ deals, userRole, summaryStats }) {
                       <div className="mt-1">{getEscrowBadge(deal.escrow_status)}</div>
                     </div>
 
-                    <Link href={route('deals.show', deal.id)}>
-                      <button className="py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-orange-600 text-white text-xs font-bold transition-colors flex items-center gap-2 shadow-sm">
-                        <span>Open Interactive Tracker</span>
-                        <ChevronRight className="h-4 w-4" />
-                      </button>
-                    </Link>
+                    <div className="flex items-center gap-2">
+                      <a
+                        href={route('deals.invoice', deal.id)}
+                        className="py-2.5 px-3 rounded-xl bg-orange-50 border border-orange-200 text-orange-800 hover:bg-orange-100 text-xs font-bold transition-colors flex items-center gap-1.5 shadow-sm"
+                        title="Download B2B PDF Invoice"
+                      >
+                        <FileText className="h-4 w-4 text-orange-600" />
+                        <span className="hidden sm:inline">Invoice (PDF)</span>
+                      </a>
+
+                      <Link href={route('deals.show', deal.id)}>
+                        <button className="py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-orange-600 text-white text-xs font-bold transition-colors flex items-center gap-2 shadow-sm">
+                          <span>Tracker</span>
+                          <ChevronRight className="h-4 w-4" />
+                        </button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );
