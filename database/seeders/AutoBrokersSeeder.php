@@ -248,5 +248,89 @@ class AutoBrokersSeeder extends Seeder
                 Vehicle::create($data);
             }
         }
+
+        // 4. Create Sample Escrow Deals if empty
+        if (Deal::count() === 0) {
+            $vehiclePorsche = Vehicle::where('make', 'Porsche')->first();
+            $vehicleBMW = Vehicle::where('make', 'BMW')->first();
+
+            if ($vehiclePorsche && $buyer) {
+                $deal1 = Deal::create([
+                    'reference_code' => 'CB-LON-90412',
+                    'buyer_id' => $buyer->id,
+                    'dealer_id' => $vehiclePorsche->dealer_id,
+                    'vehicle_id' => $vehiclePorsche->id,
+                    'type' => 'retail',
+                    'quantity' => 1,
+                    'agreed_price' => $vehiclePorsche->price_eur,
+                    'commission_rate' => 4.50,
+                    'commission_amount' => round(($vehiclePorsche->price_eur * 4.5) / 100, 2),
+                    'estimated_tax_vat' => round($vehiclePorsche->price_eur * 0.081, 2),
+                    'delivery_fee' => 450.00,
+                    'total_amount' => $vehiclePorsche->price_eur + round(($vehiclePorsche->price_eur * 4.5) / 100, 2) + round($vehiclePorsche->price_eur * 0.081, 2) + 450.00,
+                    'status' => 'escrow_funded',
+                    'escrow_status' => 'holding',
+                    'buyer_notes' => 'White-glove transporter delivery requested to London Mayfair residence.',
+                    'broker_notes' => '150-Point TÜV inspection passed. Escrow funds secured in Wise Tier-1 segregated vault.',
+                ]);
+
+                Transaction::create([
+                    'deal_id' => $deal1->id,
+                    'type' => 'buyer_deposit',
+                    'amount' => $deal1->total_amount,
+                    'currency' => 'EUR',
+                    'provider' => 'Stripe Escrow / Wise CH',
+                    'status' => 'completed',
+                    'reference_id' => 'TXN-941029',
+                ]);
+
+                ComplianceRecord::create([
+                    'deal_id' => $deal1->id,
+                    'document_type' => 'kyc_identity',
+                    'title' => 'Passport / National Identity (KYC Verification)',
+                    'status' => 'verified',
+                    'notes' => 'Verified with UK Gov Digital Identity Gateway',
+                ]);
+
+                ComplianceRecord::create([
+                    'deal_id' => $deal1->id,
+                    'document_type' => 'vehicle_inspection_cert',
+                    'title' => '150-Point Technical Inspection & Battery State Certificate',
+                    'status' => 'verified',
+                    'notes' => 'DEKRA / TÜV SÜD Certificate No. DE-8849102-CH',
+                ]);
+            }
+
+            if ($vehicleBMW && $fleetManager) {
+                $deal2 = Deal::create([
+                    'reference_code' => 'CB-FLT-88219',
+                    'buyer_id' => $fleetManager->id,
+                    'dealer_id' => $vehicleBMW->dealer_id,
+                    'vehicle_id' => $vehicleBMW->id,
+                    'type' => 'b2b_fleet',
+                    'quantity' => 2,
+                    'agreed_price' => $vehicleBMW->price_eur * 2,
+                    'commission_rate' => 3.50,
+                    'commission_amount' => round(($vehicleBMW->price_eur * 2 * 3.5) / 100, 2),
+                    'estimated_tax_vat' => 0.00, // Reverse charge
+                    'delivery_fee' => 900.00,
+                    'total_amount' => ($vehicleBMW->price_eur * 2) + round(($vehicleBMW->price_eur * 2 * 3.5) / 100, 2) + 900.00,
+                    'status' => 'logistics_in_transit',
+                    'escrow_status' => 'holding',
+                    'buyer_notes' => 'Corporate B2B Fleet Procurement. VIES VAT Reverse Charge validated.',
+                    'broker_notes' => 'En-route via CarStrado Alpine Express Logistics transporter.',
+                ]);
+
+                Transaction::create([
+                    'deal_id' => $deal2->id,
+                    'type' => 'buyer_deposit',
+                    'amount' => $deal2->total_amount,
+                    'currency' => 'EUR',
+                    'provider' => 'SEPA Corporate Wire / Wise Tier-1',
+                    'status' => 'completed',
+                    'reference_id' => 'TXN-773012',
+                ]);
+            }
+        }
     }
 }
